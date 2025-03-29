@@ -77,10 +77,12 @@ class _HomeState extends State<Home> {
             itemCount: 2,
             onPressed: () {
               // TODO: implement navigation to cart page
+              Navigator.of(context).pushNamed("/cart");
             },
           ),
         ],
       ),
+
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(2.0),
