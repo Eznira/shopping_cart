@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopping_cart/logic/blocs/cart_bloc/cart_event.dart';
 import 'package:shopping_cart/presentation/widgets/cart_icon.dart';
+import 'package:shopping_cart/presentation/widgets/custom_dialogue.dart';
 import 'package:shopping_cart/presentation/widgets/product_card.dart';
 
+import '../../data/models/product_model.dart';
 import '../../logic/blocs/cart_bloc/cart_bloc.dart';
 import '../../logic/blocs/cart_bloc/cart_state.dart';
 import '../../logic/blocs/product_bloc/procduct_state.dart';
@@ -20,6 +22,31 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
+  void _addToCart(Product product) {
+    // check if in cart already and show dialogue
+    if (!context.read<CartBloc>().state.cartItems.containsKey(product)) {
+      context.read<CartBloc>().add(AddToCart(product));
+
+      showDialog(
+        context: context,
+        builder:
+            (context) => CustomDialogue(
+              title: "Added to Cart",
+              content: "Check you cart to enter quantity!.",
+            ),
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder:
+            (context) => CustomDialogue(
+              title: "Already in Cart",
+              content: "This product is already in your cart.",
+            ),
+      );
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -33,7 +60,7 @@ class _ProductPageState extends State<ProductPage> {
       backgroundColor: Colors.pink.shade100,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: Center(child: const Text("Cataloue")),
+        title: Center(child: const Text("Catalogue")),
         actions: [
           BlocBuilder<CartBloc, CartState>(
             builder: (context, state) {
@@ -81,7 +108,7 @@ class _ProductPageState extends State<ProductPage> {
                       .toStringAsFixed(2),
                   discount: product.discountPercentage.toStringAsFixed(2),
                   addToCart: () {
-                    context.read<CartBloc>().add(AddToCart(product));
+                    _addToCart(product);
                   },
                 );
               },
