@@ -39,7 +39,7 @@ class Cart extends StatelessWidget {
                           final quantity = entry.value;
 
                           return CartProductCard(
-                            imageUrl: product.images[1],
+                            imageUrl: product.thumbnail,
                             title: product.brand,
                             price: "\$${product.price}",
                             productName: product.title,

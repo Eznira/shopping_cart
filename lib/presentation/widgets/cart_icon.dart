@@ -9,35 +9,44 @@ class CartIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        IconButton(
-          icon: Icon(Icons.shopping_cart_outlined),
-          onPressed: onPressed,
-        ),
-        if (itemCount > 0)
-          Positioned(
-            right: 5,
-            top: 5,
-            child: Container(
-              padding: EdgeInsets.all(2),
-              decoration: BoxDecoration(
-                color: Colors.red,
-                shape: BoxShape.circle,
-              ),
-              constraints: BoxConstraints(minWidth: 14, minHeight: 14),
-              child: Text(
-                '$itemCount',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 10,
-                  fontWeight: FontWeight.bold,
+    return GestureDetector(
+      onTap: onPressed,
+      child: Stack(
+        children: [
+          Container(
+            width: 30,
+            height: 30,
+            child: const Icon(Icons.shopping_cart_outlined, size: 24),
+          ),
+          if (itemCount > 0)
+            Positioned(
+              right: 1,
+              top: 1,
+              child: GestureDetector(
+                onTap: onPressed,
+                child: Container(
+                  width: 16,
+                  height: 16,
+                  padding: const EdgeInsets.all(2),
+                  decoration: const BoxDecoration(
+                    color: Colors.red,
+                    shape: BoxShape.circle,
+                  ),
+                  alignment: Alignment.center,
+                  child: Text(
+                    '$itemCount',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-                textAlign: TextAlign.center,
               ),
             ),
-          ),
-      ],
+        ],
+      ),
     );
   }
 }

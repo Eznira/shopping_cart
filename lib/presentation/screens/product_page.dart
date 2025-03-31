@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopping_cart/logic/blocs/cart_bloc/cart_event.dart';
+import 'package:shopping_cart/presentation/widgets/cart_icon.dart';
 import 'package:shopping_cart/presentation/widgets/product_card.dart';
 
 import '../../logic/blocs/cart_bloc/cart_bloc.dart';
@@ -36,31 +37,13 @@ class _ProductPageState extends State<ProductPage> {
         actions: [
           BlocBuilder<CartBloc, CartState>(
             builder: (context, state) {
-              return Stack(
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.shopping_cart),
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/cart');
-                    },
-                  ),
-                  if (state.totalItems > 0)
-                    Positioned(
-                      right: 8,
-                      top: 8,
-                      child: CircleAvatar(
-                        radius: 10,
-                        backgroundColor: Colors.red,
-                        child: Text(
-                          state.totalItems.toString(),
-                          style: const TextStyle(
-                            fontSize: 12,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                ],
+              int itemCount = state.totalItems;
+
+              return CartIcon(
+                itemCount: itemCount,
+                onPressed: () {
+                  Navigator.pushNamed(context, '/cart');
+                },
               );
             },
           ),
@@ -89,7 +72,7 @@ class _ProductPageState extends State<ProductPage> {
               itemBuilder: (context, index) {
                 final product = products[index];
                 return ProductCard(
-                  imageUrl: product.images[0],
+                  imageUrl: product.thumbnail,
                   title: product.title,
                   productName: product.brand,
                   price: product.price.toString(),
