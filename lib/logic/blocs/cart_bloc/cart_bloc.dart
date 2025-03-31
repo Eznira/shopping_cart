@@ -8,7 +8,10 @@ import 'cart_state.dart';
 
 class CartBloc extends Bloc<CartEvent, CartState> {
   CartBloc() : super(CartState(cartItems: {}, totalItems: 0, totalPrice: 0.0)) {
+    //handle AddToCart event
     on<AddToCart>((event, emit) {
+      //update CartItems
+      // add to cart
       final updatedCart = Map<Product, int>.from(state.cartItems);
       updatedCart.update(
         event.product,
@@ -16,15 +19,19 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         ifAbsent: () => 1,
       );
 
+      // sum up cartItem quantity
       final totalItems = updatedCart.values.fold(
         0,
         (sum, quantity) => sum + quantity,
       );
+
+      // calculate and sum up prices
       final totalPrice = updatedCart.entries.fold(
         0.0,
         (sum, entry) => sum + (entry.key.price * entry.value),
       );
 
+      // update cartState
       emit(
         state.copyWith(
           cartItems: updatedCart,
@@ -34,6 +41,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       );
     });
 
+    // remove from cart
     on<RemoveFromCart>((event, emit) {
       final updatedCart = Map<Product, int>.from(state.cartItems);
       if (updatedCart.containsKey(event.product)) {

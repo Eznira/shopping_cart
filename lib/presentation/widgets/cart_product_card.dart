@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 
-class CartProductCard extends StatefulWidget {
+class CartProductCard extends StatelessWidget {
   final String imageUrl;
   final String title;
   final String productName;
   final String price;
   final String discount;
   final String discountPrice;
+  final int quantity;
+  final VoidCallback onAdd;
+  final VoidCallback onRemove;
 
   const CartProductCard({
     super.key,
@@ -16,28 +19,10 @@ class CartProductCard extends StatefulWidget {
     required this.price,
     required this.discountPrice,
     required this.discount,
+    required this.quantity,
+    required this.onAdd,
+    required this.onRemove,
   });
-
-  @override
-  _CartProductCardState createState() => _CartProductCardState();
-}
-
-class _CartProductCardState extends State<CartProductCard> {
-  int quantity = 1;
-
-  void _increment() {
-    setState(() {
-      quantity++;
-    });
-  }
-
-  void _decrement() {
-    if (quantity > 1) {
-      setState(() {
-        quantity--;
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +31,7 @@ class _CartProductCardState extends State<CartProductCard> {
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: Padding(
-          padding: const EdgeInsets.all(.0),
+          padding: const EdgeInsets.all(0),
           child: Stack(
             children: [
               Row(
@@ -59,14 +44,14 @@ class _CartProductCardState extends State<CartProductCard> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
                       child: Image.network(
-                        widget.imageUrl,
+                        imageUrl,
                         width: 100,
                         height: 100,
                         fit: BoxFit.cover,
                       ),
                     ),
                   ),
-                  SizedBox(width: 12),
+                  const SizedBox(width: 12),
 
                   // Product Details (Right)
                   Expanded(
@@ -76,18 +61,17 @@ class _CartProductCardState extends State<CartProductCard> {
                         Padding(
                           padding: const EdgeInsets.only(left: 8),
                           child: Text(
-                            widget.title,
+                            title,
                             style: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
-
                         Padding(
-                          padding: EdgeInsets.only(left: 8),
+                          padding: const EdgeInsets.only(left: 8),
                           child: Text(
-                            widget.productName,
+                            productName,
                             style: TextStyle(
                               fontSize: 10,
                               fontWeight: FontWeight.bold,
@@ -101,16 +85,16 @@ class _CartProductCardState extends State<CartProductCard> {
                           child: Row(
                             children: [
                               Text(
-                                widget.price,
+                                price,
                                 style: const TextStyle(
                                   fontSize: 10,
                                   color: Colors.grey,
                                   decoration: TextDecoration.lineThrough,
                                 ),
                               ),
-                              SizedBox(width: 4),
+                              const SizedBox(width: 4),
                               Text(
-                                widget.discountPrice,
+                                discountPrice,
                                 style: const TextStyle(
                                   fontSize: 12,
                                   color: Colors.black,
@@ -125,18 +109,17 @@ class _CartProductCardState extends State<CartProductCard> {
                           child: Row(
                             children: [
                               Text(
-                                widget.discount,
-
+                                discount,
                                 style: const TextStyle(
                                   fontSize: 10,
                                   color: Colors.pink,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              SizedBox(width: 2),
-                              Text(
+                              const SizedBox(width: 2),
+                              const Text(
                                 "OFF",
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 12,
                                   color: Colors.pink,
                                   fontWeight: FontWeight.bold,
@@ -168,43 +151,35 @@ class _CartProductCardState extends State<CartProductCard> {
                     child: Row(
                       children: [
                         GestureDetector(
-                          onTap: _decrement,
+                          onTap: onRemove,
                           child: Container(
-                            width: 18, // Adjust size
+                            width: 18,
                             height: 18,
-                            decoration: BoxDecoration(
-                              color: Colors.transparent, // Background color
+                            decoration: const BoxDecoration(
                               shape: BoxShape.circle,
                             ),
-                            child: Icon(
-                              Icons.remove,
-                              size: 12, // Adjust icon size
-                            ),
+                            child: const Icon(Icons.remove, size: 12),
                           ),
                         ),
-                        SizedBox(width: 6), // Space between elements
+                        const SizedBox(width: 6),
                         Text(
                           quantity.toString(),
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
                             color: Colors.pink,
                           ),
                         ),
-                        SizedBox(width: 6), // Space between elements
+                        const SizedBox(width: 6),
                         GestureDetector(
-                          onTap: _increment,
+                          onTap: onAdd,
                           child: Container(
-                            width: 18, // Adjust size
+                            width: 18,
                             height: 18,
-                            decoration: BoxDecoration(
-                              color: Colors.transparent, // Background color
+                            decoration: const BoxDecoration(
                               shape: BoxShape.circle,
                             ),
-                            child: Icon(
-                              Icons.add,
-                              size: 12, // Adjust icon size
-                            ),
+                            child: const Icon(Icons.add, size: 12),
                           ),
                         ),
                       ],
@@ -212,8 +187,6 @@ class _CartProductCardState extends State<CartProductCard> {
                   ),
                 ),
               ),
-
-              // Quantity Control (Bottom-Right)
             ],
           ),
         ),

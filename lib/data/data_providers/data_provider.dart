@@ -2,9 +2,10 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:shopping_cart/constants/constants.dart' as appConst;
 
 class ProductDataProvider {
-  final String apiUrl = "https://dummyjson.com/products";
+  final String apiUrl = appConst.apiUrl;
 
   Future<Map<String, dynamic>> fetchProducts() async {
     final response = await http.get(Uri.parse(apiUrl));

@@ -8,6 +8,7 @@ class ProductRepository {
 
   Future<List<Product>> getProducts() async {
     final rawJson = await dataProvider.fetchProducts();
+    print(rawJson);
     final List<dynamic> productsJson = rawJson['products'];
     return productsJson.map((json) => Product.fromJson(json)).toList();
   }

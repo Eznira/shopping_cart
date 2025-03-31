@@ -5,7 +5,7 @@ import '../../../data/repo/repo.dart';
 import 'product_event.dart';
 
 class ProductBloc extends Bloc<ProductEvent, ProductState> {
-  final ProductRepository repository;
+  late final ProductRepository repository;
 
   ProductBloc(this.repository) : super(ProductLoading()) {
     on<FetchProducts>((event, emit) async {

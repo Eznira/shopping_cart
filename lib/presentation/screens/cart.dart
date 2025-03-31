@@ -1,38 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../logic/blocs/cart_bloc/cart_bloc.dart';
+import '../../logic/blocs/cart_bloc/cart_event.dart';
+import '../../logic/blocs/cart_bloc/cart_state.dart';
 import '../widgets/cart_product_card.dart';
 
-class Cart extends StatefulWidget {
-  @override
-  _CartState createState() => _CartState();
-}
-
-class _CartState extends State<Cart> {
-  int itemCount = 2;
-  double pricePerItem = 150.0;
-  final List<Map<String, String>> products = [
-    {
-      'productName': 'iPhone 9',
-      'title': 'Stylish Shoes',
-      'price': '\$50',
-      'imageUrl': 'https://via.placeholder.com/100',
-      'discountPrice': '\$47',
-      'discount': '12.3\%',
-    },
-  ];
-
+class Cart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    double totalPrice = itemCount * pricePerItem;
-
     return Scaffold(
       backgroundColor: Colors.pink.shade100,
       appBar: AppBar(
-        title: Text("Cart", style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text("Cart"),
         backgroundColor: Colors.transparent,
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -42,92 +26,105 @@ class _CartState extends State<Cart> {
         child: Column(
           children: [
             Expanded(
-              child: ListView(
-                children: [
-                  CartProductCard(
-                    imageUrl: "https://via.placeholder.com/100",
-                    title: "Stylish Jacket",
-                    price: "\$33.99",
-                    productName: 'Apple',
-                    discountPrice: '\$22.00',
-                    discount: '12.4\%',
-                  ),
-                  CartProductCard(
-                    imageUrl: "https://via.placeholder.com/100",
-                    title: "Stylish Jacket",
-                    price: "\$33.99",
-                    productName: 'Apple',
-                    discountPrice: '\$22.00',
-                    discount: '12.4\%',
-                  ),
-                  CartProductCard(
-                    imageUrl: "https://via.placeholder.com/100",
-                    title: "Stylish Jacket",
-                    price: "\$33.99",
-                    productName: 'Apple',
-                    discountPrice: '\$22.00',
-                    discount: '12.4\%',
-                  ),
-                ],
+              child: BlocBuilder<CartBloc, CartState>(
+                builder: (context, state) {
+                  if (state.cartItems.isEmpty) {
+                    return const Center(child: Text("Your cart is empty"));
+                  }
+
+                  return ListView(
+                    children:
+                        state.cartItems.entries.map((entry) {
+                          final product = entry.key;
+                          final quantity = entry.value;
+
+                          return CartProductCard(
+                            imageUrl: product.images[1],
+                            title: product.brand,
+                            price: "\$${product.price}",
+                            productName: product.title,
+                            discountPrice:
+                                "\$${(product.price * 0.9).toStringAsFixed(2)}",
+                            discount: "10%",
+                            quantity: quantity,
+                            onAdd: () {
+                              context.read<CartBloc>().add(AddToCart(product));
+                            },
+                            onRemove: () {
+                              context.read<CartBloc>().add(
+                                RemoveFromCart(product),
+                              );
+                            },
+                          );
+                        }).toList(),
+                  );
+                },
               ),
             ),
 
             // Bottom Total & Checkout Section
-            Card(
-              child: Padding(
-                padding: EdgeInsets.all(12),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // Total Price
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Amount Price",
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey.shade700,
-                            ),
+            BlocBuilder<CartBloc, CartState>(
+              builder: (context, state) {
+                return Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // Total Price
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "Amount Price",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              const SizedBox(height: 6),
+                              Text(
+                                "\$${state.totalPrice.toStringAsFixed(2)}",
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
                           ),
-                          SizedBox(height: 6),
-                          Text(
-                            "\$$totalPrice",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                        ),
 
-                    // Checkout Button
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.pink,
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 14,
-                          vertical: 20,
+                        // Checkout Button
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.pink,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 14,
+                              vertical: 20,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          onPressed: () {
+                            // Handle checkout
+                          },
+                          child: Text(
+                            "Checkout (${state.totalItems})",
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      onPressed: () {
-                        // Handle checkout
-                      },
-                      child: Text(
-                        "Checkout ($itemCount)",
-                        style: TextStyle(fontSize: 16, color: Colors.white),
-                      ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
+                  ),
+                );
+              },
             ),
           ],
         ),

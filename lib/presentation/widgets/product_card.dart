@@ -7,6 +7,7 @@ class ProductCard extends StatelessWidget {
   final String price;
   final String discount;
   final String discountPrice;
+  final VoidCallback addToCart;
 
   const ProductCard({
     super.key,
@@ -16,6 +17,7 @@ class ProductCard extends StatelessWidget {
     required this.price,
     required this.discountPrice,
     required this.discount,
+    required this.addToCart,
   });
 
   @override
@@ -118,9 +120,7 @@ class ProductCard extends StatelessWidget {
             bottom: 80, // Adjust position
             right: 8,
             child: ElevatedButton(
-              onPressed: () {
-                // Handle button press
-              },
+              onPressed: addToCart,
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.pink, // Button color
                 padding: const EdgeInsets.symmetric(
