@@ -60,7 +60,12 @@ class _ProductPageState extends State<ProductPage> {
       backgroundColor: Colors.pink.shade100,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: Center(child: const Text("Catalogue")),
+        title: Center(
+          child: const Text(
+            "Catalogue",
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+          ),
+        ),
         actions: [
           BlocBuilder<CartBloc, CartState>(
             builder: (context, state) {
@@ -103,9 +108,7 @@ class _ProductPageState extends State<ProductPage> {
                   title: product.title,
                   productName: product.brand,
                   price: product.price.toString(),
-                  discountPrice: (product.discountPercentage.roundToDouble() *
-                          product.price)
-                      .toStringAsFixed(2),
+                  discountPrice: product.discountPrice.toStringAsFixed(2),
                   discount: product.discountPercentage.toStringAsFixed(2),
                   addToCart: () {
                     _addToCart(product);

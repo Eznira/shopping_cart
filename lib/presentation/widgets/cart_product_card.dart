@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class CartProductCard extends StatelessWidget {
   final String imageUrl;
   final String title;
-  final String productName;
+  final String brandName;
   final String price;
   final String discount;
   final String discountPrice;
@@ -15,7 +15,7 @@ class CartProductCard extends StatelessWidget {
     super.key,
     required this.imageUrl,
     required this.title,
-    required this.productName,
+    required this.brandName,
     required this.price,
     required this.discountPrice,
     required this.discount,
@@ -71,7 +71,7 @@ class CartProductCard extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(left: 8),
                           child: Text(
-                            productName,
+                            brandName,
                             style: TextStyle(
                               fontSize: 10,
                               fontWeight: FontWeight.bold,

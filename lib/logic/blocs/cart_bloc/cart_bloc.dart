@@ -28,7 +28,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       // calculate and sum up prices
       final totalPrice = updatedCart.entries.fold(
         0.0,
-        (sum, entry) => sum + (entry.key.price * entry.value),
+        (sum, entry) => sum + entry.key.discountPrice * entry.value,
       );
 
       // update cartState
@@ -58,7 +58,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       );
       final totalPrice = updatedCart.entries.fold(
         0.0,
-        (sum, entry) => sum + (entry.key.price * entry.value),
+        (sum, entry) => sum + entry.key.discountPrice * entry.value,
       );
 
       emit(

@@ -23,6 +23,8 @@ class Product {
   final List<String> images;
   final String thumbnail;
 
+  double get discountPrice => price - (price * discountPercentage / 100);
+
   Product({
     required this.id,
     required this.title,

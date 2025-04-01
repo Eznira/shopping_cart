@@ -12,7 +12,10 @@ class Cart extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.pink.shade100,
       appBar: AppBar(
-        title: const Text("Cart"),
+        title: const Text(
+          "Cart",
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+        ),
         backgroundColor: Colors.transparent,
         centerTitle: true,
         leading: IconButton(
@@ -40,12 +43,12 @@ class Cart extends StatelessWidget {
 
                           return CartProductCard(
                             imageUrl: product.thumbnail,
-                            title: product.brand,
+                            title: product.title,
                             price: "\$${product.price}",
-                            productName: product.title,
-                            discountPrice:
-                                "\$${(product.price * 0.9).toStringAsFixed(2)}",
-                            discount: "10%",
+                            brandName: product.brand,
+                            discountPrice: product.discountPrice
+                                .toStringAsFixed(2),
+                            discount: "${product.discountPercentage}%",
                             quantity: quantity,
                             onAdd: () {
                               context.read<CartBloc>().add(AddToCart(product));
@@ -77,12 +80,12 @@ class Cart extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
+                              Text(
                                 "Amount Price",
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.grey,
+                                  color: Colors.grey.shade700,
                                 ),
                               ),
                               const SizedBox(height: 6),
@@ -112,12 +115,42 @@ class Cart extends StatelessWidget {
                           onPressed: () {
                             // Handle checkout
                           },
-                          child: Text(
-                            "Checkout (${state.totalItems})",
-                            style: const TextStyle(
-                              fontSize: 16,
-                              color: Colors.white,
-                            ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Text(
+                                "Checkout",
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.white,
+                                ),
+                              ),
+
+                              SizedBox(width: 4),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 4,
+                                ),
+                                child: Container(
+                                  width: 16,
+                                  height: 16,
+
+                                  decoration: const BoxDecoration(
+                                    color: Colors.white,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    state.totalItems.toString(),
+                                    style: const TextStyle(
+                                      fontSize: 10,
+                                      color: Colors.pink,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
