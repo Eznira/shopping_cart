@@ -90,7 +90,7 @@ class Cart extends StatelessWidget {
                               ),
                               const SizedBox(height: 6),
                               Text(
-                                "\$${state.totalPrice.toStringAsFixed(2)}",
+                                "\u{20B9}${state.totalPrice.toStringAsFixed(2)}",
                                 style: const TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,

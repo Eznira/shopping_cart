@@ -85,7 +85,7 @@ class CartProductCard extends StatelessWidget {
                           child: Row(
                             children: [
                               Text(
-                                price,
+                                "\u{20B9}${price}",
                                 style: const TextStyle(
                                   fontSize: 10,
                                   color: Colors.grey,
@@ -94,7 +94,7 @@ class CartProductCard extends StatelessWidget {
                               ),
                               const SizedBox(width: 4),
                               Text(
-                                discountPrice,
+                                "\u{20B9}${discountPrice}",
                                 style: const TextStyle(
                                   fontSize: 12,
                                   color: Colors.black,
@@ -109,7 +109,7 @@ class CartProductCard extends StatelessWidget {
                           child: Row(
                             children: [
                               Text(
-                                discount,
+                                "${discount}%",
                                 style: const TextStyle(
                                   fontSize: 10,
                                   color: Colors.pink,
